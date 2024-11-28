@@ -1,14 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
 
-import Button from '../../../base/ui/components/web/Button';
-import { NOTIFY_CLICK_MODE } from '../../types';
-
+import Button from "../../../base/ui/components/web/Button";
+import { NOTIFY_CLICK_MODE } from "../../types";
 
 /**
  * The type of the React {@code Component} props of {@link HangupContextMenuItem}.
  */
 interface IProps {
-
     /**
      * Accessibility label for the button.
      */
@@ -63,11 +61,11 @@ export const HangupContextMenuItem = (props: IProps) => {
 
     return (
         <Button
-            accessibilityLabel = { props.accessibilityLabel }
-            fullWidth = { true }
-            label = { props.label }
-            onClick = { _onClick }
-            type = { props.buttonType } />
+            accessibilityLabel={props.accessibilityLabel}
+            fullWidth={true}
+            label={props.label}
+            onClick={_onClick}
+            type={props.buttonType}
+        />
     );
 };
-

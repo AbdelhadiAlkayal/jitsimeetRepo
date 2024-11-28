@@ -1,8 +1,8 @@
-import { IReduxState } from '../../app/types';
-import { IStateful } from '../app/types';
-import { toState } from '../redux/functions';
+import { IReduxState } from "../../app/types";
+import { IStateful } from "../app/types";
+import { toState } from "../redux/functions";
 
-export * from './functions.any';
+export * from "./functions.any";
 
 /**
  * Returns the deviceId for the currently used camera.
@@ -11,7 +11,7 @@ export * from './functions.any';
  * @returns {void}
  */
 export function getCurrentCameraDeviceId(state: IReduxState) {
-    return getDeviceIdByType(state, 'isVideoTrack');
+    return getDeviceIdByType(state, "isVideoTrack");
 }
 
 /**
@@ -21,7 +21,7 @@ export function getCurrentCameraDeviceId(state: IReduxState) {
  * @returns {void}
  */
 export function getCurrentMicDeviceId(state: IReduxState) {
-    return getDeviceIdByType(state, 'isAudioTrack');
+    return getDeviceIdByType(state, "isAudioTrack");
 }
 
 /**
@@ -31,7 +31,7 @@ export function getCurrentMicDeviceId(state: IReduxState) {
  * @returns {void}
  */
 export function getCurrentOutputDeviceId(state: IReduxState) {
-    return state['features/base/settings'].audioOutputDeviceId;
+    return state["features/base/settings"].audioOutputDeviceId;
 }
 
 /**
@@ -42,12 +42,12 @@ export function getCurrentOutputDeviceId(state: IReduxState) {
  * @returns {string}
  */
 function getDeviceIdByType(state: IReduxState, isType: string) {
-    const [ deviceId ] = state['features/base/tracks']
-        .map(t => t.jitsiTrack)
-        .filter(t => t?.isLocal() && t[isType as keyof typeof t]())
-        .map(t => t.getDeviceId());
+    const [deviceId] = state["features/base/tracks"]
+        .map((t) => t.jitsiTrack)
+        .filter((t) => t?.isLocal() && t[isType as keyof typeof t]())
+        .map((t) => t.getDeviceId());
 
-    return deviceId || '';
+    return deviceId || "";
 }
 
 /**
@@ -57,7 +57,7 @@ function getDeviceIdByType(state: IReduxState, isType: string) {
  * @returns {string}
  */
 export function getDisplayName(state: IReduxState): string {
-    return state['features/base/settings'].displayName || '';
+    return state["features/base/settings"].displayName || "";
 }
 
 /**
@@ -70,11 +70,8 @@ export function getDisplayName(state: IReduxState): string {
  */
 export function getUserSelectedCameraDeviceId(stateful: IStateful) {
     const state = toState(stateful);
-    const {
-        userSelectedCameraDeviceId,
-        userSelectedCameraDeviceLabel
-    } = state['features/base/settings'];
-    const { videoInput } = state['features/base/devices'].availableDevices;
+    const { userSelectedCameraDeviceId, userSelectedCameraDeviceLabel } = state["features/base/settings"];
+    const { videoInput } = state["features/base/devices"].availableDevices;
 
     return _getUserSelectedDeviceId({
         availableDevices: videoInput,
@@ -84,7 +81,7 @@ export function getUserSelectedCameraDeviceId(stateful: IStateful) {
         matchRegex: /\s#\d*(?!.*\s#\d*)/,
         userSelectedDeviceId: userSelectedCameraDeviceId,
         userSelectedDeviceLabel: userSelectedCameraDeviceLabel,
-        replacement: ''
+        replacement: "",
     });
 }
 
@@ -98,11 +95,8 @@ export function getUserSelectedCameraDeviceId(stateful: IStateful) {
  */
 export function getUserSelectedMicDeviceId(stateful: IStateful) {
     const state = toState(stateful);
-    const {
-        userSelectedMicDeviceId,
-        userSelectedMicDeviceLabel
-    } = state['features/base/settings'];
-    const { audioInput } = state['features/base/devices'].availableDevices;
+    const { userSelectedMicDeviceId, userSelectedMicDeviceLabel } = state["features/base/settings"];
+    const { audioInput } = state["features/base/devices"].availableDevices;
 
     return _getUserSelectedDeviceId({
         availableDevices: audioInput,
@@ -112,7 +106,7 @@ export function getUserSelectedMicDeviceId(stateful: IStateful) {
         matchRegex: /\s\(\d*-\s(?!.*\s\(\d*-\s)/,
         userSelectedDeviceId: userSelectedMicDeviceId,
         userSelectedDeviceLabel: userSelectedMicDeviceLabel,
-        replacement: ' ('
+        replacement: " (",
     });
 }
 
@@ -126,18 +120,15 @@ export function getUserSelectedMicDeviceId(stateful: IStateful) {
  */
 export function getUserSelectedOutputDeviceId(stateful: IStateful) {
     const state = toState(stateful);
-    const {
-        userSelectedAudioOutputDeviceId,
-        userSelectedAudioOutputDeviceLabel
-    } = state['features/base/settings'];
-    const { audioOutput } = state['features/base/devices'].availableDevices;
+    const { userSelectedAudioOutputDeviceId, userSelectedAudioOutputDeviceLabel } = state["features/base/settings"];
+    const { audioOutput } = state["features/base/devices"].availableDevices;
 
     return _getUserSelectedDeviceId({
         availableDevices: audioOutput,
         matchRegex: undefined,
         userSelectedDeviceId: userSelectedAudioOutputDeviceId,
         userSelectedDeviceLabel: userSelectedAudioOutputDeviceLabel,
-        replacement: undefined
+        replacement: undefined,
     });
 }
 
@@ -172,15 +163,16 @@ function _getUserSelectedDeviceId(options: {
 }) {
     const {
         availableDevices,
-        matchRegex = '',
+        matchRegex = "",
         userSelectedDeviceId,
         userSelectedDeviceLabel,
-        replacement = ''
+        replacement = "",
     } = options;
 
     if (userSelectedDeviceId) {
         const foundMatchingBasedonDeviceId = availableDevices?.find(
-            candidate => candidate.deviceId === userSelectedDeviceId);
+            (candidate) => candidate.deviceId === userSelectedDeviceId
+        );
 
         // Prioritize matching the deviceId
         if (foundMatchingBasedonDeviceId) {
@@ -194,10 +186,10 @@ function _getUserSelectedDeviceId(options: {
         return;
     }
 
-    const strippedDeviceLabel
-        = matchRegex ? userSelectedDeviceLabel.replace(matchRegex, replacement)
-            : userSelectedDeviceLabel;
-    const foundMatchBasedOnLabel = availableDevices?.find(candidate => {
+    const strippedDeviceLabel = matchRegex
+        ? userSelectedDeviceLabel.replace(matchRegex, replacement)
+        : userSelectedDeviceLabel;
+    const foundMatchBasedOnLabel = availableDevices?.find((candidate) => {
         const { label } = candidate;
 
         if (!label) {
@@ -206,8 +198,7 @@ function _getUserSelectedDeviceId(options: {
             return true;
         }
 
-        const strippedCandidateLabel
-            = label.replace(matchRegex, replacement);
+        const strippedCandidateLabel = label.replace(matchRegex, replacement);
 
         return strippedDeviceLabel === strippedCandidateLabel;
     });

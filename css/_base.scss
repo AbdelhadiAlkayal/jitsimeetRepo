@@ -104,14 +104,8 @@ form {
 }
 
 .watermark {
-    display: block;
-    position: absolute;
-    top: 15;
-    width: $watermarkWidth;
-    height: $watermarkHeight;
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: $zindex2;
+    width: 130px;
+    height: 120px;
 }
 
 .leftwatermark {

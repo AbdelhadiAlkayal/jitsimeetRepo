@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // We need to reference these files directly to avoid loading things that are not available
 // in this environment (e.g. JitsiMeetJS or interfaceConfig)
-import { DEFAULT_ICON } from '../base/icons/svg/constants';
-import { IProps } from '../base/toolbox/components/AbstractButton';
+import { DEFAULT_ICON } from "../base/icons/svg/constants";
+import { IProps } from "../base/toolbox/components/AbstractButton";
 
-import ToolbarButton from './ToolbarButton';
+import ToolbarButton from "./ToolbarButton";
+import baseApi from "../../api/axios";
+import { useSelector } from "react-redux";
+import { getConferenceName } from "../base/conference/functions";
 
 const { api } = window.alwaysOnTop;
 
@@ -15,8 +18,7 @@ type Props = Partial<IProps>;
  * Stateless hangup button for the Always-on-Top windows.
  */
 export default class HangupButton extends Component<Props> {
-
-    accessibilityLabel = 'Hangup';
+    accessibilityLabel = "Hangup";
     icon = DEFAULT_ICON.IconHangup;
 
     /**
@@ -39,7 +41,7 @@ export default class HangupButton extends Component<Props> {
      * @returns {void}
      */
     _onClick() {
-        api.executeCommand('hangup');
+        api.executeCommand("hangup");
     }
 
     /**
@@ -51,10 +53,11 @@ export default class HangupButton extends Component<Props> {
     render() {
         return (
             <ToolbarButton
-                accessibilityLabel = { this.accessibilityLabel }
-                customClass = 'hangup-button'
-                icon = { this.icon }
-                onClick = { this._onClick } />
+                accessibilityLabel={this.accessibilityLabel}
+                customClass="hangup-button"
+                icon={this.icon}
+                onClick={this._onClick}
+            />
         );
     }
 }
