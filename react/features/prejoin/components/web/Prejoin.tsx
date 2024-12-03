@@ -246,7 +246,6 @@ const Prejoin = ({
     const { classes } = useStyles();
     const { t } = useTranslation();
     const dispatch = useDispatch();
-
     /**
      * Handler for the join button.
      *

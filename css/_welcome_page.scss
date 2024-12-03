@@ -10,7 +10,7 @@ body.welcome-page {
     padding: 16px;
     height: 90vh;
     gap: 1.7rem;
-
+  
 .container_logo{
     display: flex;
     justify-content: space-between;
@@ -23,6 +23,7 @@ body.welcome-page {
     }
 
 }
+
     &__content {
         display: flex;
         flex-direction: column;
@@ -112,7 +113,6 @@ body.welcome-page {
                     background-color: #2badb2;
                     color: #fff;
                 }
-
                 &.disabled {
                     background-color: #ccc;
                     color: #666;
@@ -122,5 +122,4 @@ body.welcome-page {
             }
         }
     }
-
 }
