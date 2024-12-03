@@ -9,9 +9,9 @@
  */
 
 var interfaceConfig = {
-    APP_NAME: 'Jitsi Meet',
-    AUDIO_LEVEL_PRIMARY_COLOR: 'rgba(255,255,255,0.4)',
-    AUDIO_LEVEL_SECONDARY_COLOR: 'rgba(255,255,255,0.2)',
+    APP_NAME: "spaceDesk",
+    AUDIO_LEVEL_PRIMARY_COLOR: "rgba(255,255,255,0.4)",
+    AUDIO_LEVEL_SECONDARY_COLOR: "rgba(255,255,255,0.2)",
 
     /**
      * A UX mode where the last screen share participant is automatically
@@ -21,13 +21,13 @@ var interfaceConfig = {
      *
      * Note: this mode is experimental and subject to breakage.
      */
-    AUTO_PIN_LATEST_SCREEN_SHARE: 'remote-only',
-    BRAND_WATERMARK_LINK: '',
+    AUTO_PIN_LATEST_SCREEN_SHARE: "remote-only",
+    BRAND_WATERMARK_LINK: "",
 
     CLOSE_PAGE_GUEST_HINT: false, // A html text to be shown to guests on the close page, false disables it
 
-    DEFAULT_BACKGROUND: '#040404',
-    DEFAULT_WELCOME_PAGE_LOGO_URL: 'images/watermark.svg',
+    DEFAULT_BACKGROUND: "#2badb2ab",
+    DEFAULT_WELCOME_PAGE_LOGO_URL: "images/watermark.svg",
 
     DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
 
@@ -75,14 +75,14 @@ var interfaceConfig = {
 
     FILM_STRIP_MAX_HEIGHT: 120,
 
-    GENERATE_ROOMNAMES_ON_WELCOME_PAGE: true,
+    GENERATE_ROOMNAMES_ON_WELCOME_PAGE: false,
 
     /**
      * Hide the invite prompt in the header when alone in the meeting.
      */
     HIDE_INVITE_MORE_HEADER: false,
 
-    JITSI_WATERMARK_LINK: 'https://jitsi.org',
+    JITSI_WATERMARK_LINK: "https://spacedesk.sa",
 
     LANG_DETECTION: true, // Allow i18n to detect the system language
     LOCAL_THUMBNAIL_RATIO: 16 / 9, // 16:9
@@ -108,10 +108,10 @@ var interfaceConfig = {
     // has a suboptimal experience. Browsers which are not listed as optimal or
     // unsupported are considered suboptimal. Valid values are:
     // chrome, chromium, electron, firefox , safari, webkit
-    OPTIMAL_BROWSERS: [ 'chrome', 'chromium', 'firefox', 'electron', 'safari', 'webkit' ],
+    OPTIMAL_BROWSERS: ["chrome", "chromium", "firefox", "electron", "safari", "webkit"],
 
     POLICY_LOGO: null,
-    PROVIDER_NAME: 'Jitsi',
+    PROVIDER_NAME: "Jitsi",
 
     /**
      * If true, will display recent list
@@ -121,7 +121,7 @@ var interfaceConfig = {
     RECENT_LIST_ENABLED: true,
     REMOTE_THUMBNAIL_RATIO: 1, // 1:1
 
-    SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar', 'sounds', 'more' ],
+    SETTINGS_SECTIONS: ["devices", "language", "moderator", "profile", "calendar", "sounds", "more"],
 
     /**
      * Specify which sharing features should be displayed. If the value is not set
@@ -139,14 +139,14 @@ var interfaceConfig = {
     SHOW_CHROME_EXTENSION_BANNER: false,
 
     SHOW_JITSI_WATERMARK: true,
-    SHOW_POWERED_BY: false,
+    SHOW_POWERED_BY: true,
     SHOW_PROMOTIONAL_CLOSE_PAGE: false,
 
     /*
      * If indicated some of the error dialogs may point to the support URL for
      * help.
      */
-    SUPPORT_URL: 'https://community.jitsi.org/',
+    SUPPORT_URL: "https://community.jitsi.org/",
 
     // Browsers, in addition to those which do not fully support WebRTC, that
     // are not supported and should show the unsupported browser page.
@@ -162,7 +162,7 @@ var interfaceConfig = {
     // screen, 'width' would fit the original video width to the width of the
     // screen respecting ratio, 'nocrop' would make the video as large as
     // possible and preserve aspect ratio without cropping.
-    VIDEO_LAYOUT_FIT: 'both',
+    VIDEO_LAYOUT_FIT: "both",
 
     /**
      * If true, hides the video quality label indicating the resolution status
@@ -265,7 +265,7 @@ var interfaceConfig = {
     // Allow all above example options to include a trailing comma and
     // prevent fear when commenting out the last value.
     // eslint-disable-next-line sort-keys
-    makeJsonParserHappy: 'even if last key had a trailing comma'
+    makeJsonParserHappy: "even if last key had a trailing comma",
 
     // No configuration value should follow this line.
 };
