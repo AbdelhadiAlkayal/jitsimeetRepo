@@ -246,6 +246,21 @@ const Prejoin = ({
     const { classes } = useStyles();
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        const tempName = settings.displayName ?? localStorage.getItem("name")
+
+        if (tempName) {
+            APP.store.dispatch(
+                updateSettings({
+                    displayName: tempName,
+                })
+            );
+            // console.log("settings.displayName", settings.displayName || "hello");
+        }
+    }, [])
     /**
      * Handler for the join button.
      *

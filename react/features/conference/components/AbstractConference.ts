@@ -50,9 +50,9 @@ export class AbstractConference<P extends AbstractProps, S> extends Component<P,
      * @returns {React$Element}
      */
     renderNotificationsContainer(props?: any) {
-        // if (this.props._notificationsVisible) {
-        //     return React.createElement(NotificationsContainer, props);
-        // }
+        if (this.props._notificationsVisible) {
+            return React.createElement(NotificationsContainer, props);
+        }
 
         return null;
     }

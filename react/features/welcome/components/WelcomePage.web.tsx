@@ -17,10 +17,7 @@ import { AbstractWelcomePage, IProps, _mapStateToProps } from "./AbstractWelcome
 import Tabs from "./Tabs";
 import baseApi from "../../../api/axios";
 
-
 import InviteButton from "./invite-button/InviteButton";
-
-
 
 /**
  * The pattern used to validate room name.
@@ -156,13 +153,12 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
         const jwtParam = url.searchParams.get("jwt") || "";
         const keyParam = url.searchParams.get("key") || "";
-        this.jwtParam = jwtParam
+        this.jwtParam = jwtParam;
         localStorage.setItem("token", jwtParam);
 
         if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
 
         document.body.classList.add("welcome-page");
-
 
         if (this.state.generateRoomNames) {
             this._updateRoomName();
@@ -181,6 +177,11 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         if (this._shouldShowAdditionalCard()) {
             this._additionalCardRef?.appendChild(this._additionalCardTemplate?.content.cloneNode(true) as Node);
         }
+        // debugger
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        const tempName = settings.displayName ?? ""
+        localStorage.setItem("name", tempName);
     }
 
     /**
@@ -209,11 +210,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
 
 
-
-        const obj = localStorage.getItem("features/base/settings");
-        const settings = JSON.parse(obj || "{}");
-        localStorage.setItem("name", settings.displayName);
-
         const checkRoom = async () => {
             try {
                 const res = await baseApi.get(`/meeting/${this.state.room}`);
@@ -233,14 +229,12 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
         return (
             <div className={"welcome"} id="welcome_page">
-
                 <div className="container_logo">
                     <Watermarks />
                     <div className="invite_container">
                         {!!this.jwtParam && <InviteButton createMeeting={() => this._onJoin(false)} />}
                     </div>
                 </div>
-
 
                 <div className="welcome__content">
                     <h1 className="welcome__content__title">Create your Video Calls and meeting</h1>
@@ -267,7 +261,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                                 >
                                     {"Join"}
                                 </button>
-
                             </div>
                         </div>
                         {this.state.isExist && <p style={{ color: "red" }}>invalid room code</p>}
