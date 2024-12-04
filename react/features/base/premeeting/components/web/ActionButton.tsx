@@ -1,12 +1,11 @@
-import React, { ReactNode, useCallback } from 'react';
-import { makeStyles } from 'tss-react/mui';
+import React, { ReactNode, useCallback } from "react";
+import { makeStyles } from "tss-react/mui";
 
-import Icon from '../../../icons/components/Icon';
-import { IconArrowDown } from '../../../icons/svg';
-import { withPixelLineHeight } from '../../../styles/functions.web';
+import Icon from "../../../icons/components/Icon";
+import { IconArrowDown } from "../../../icons/svg";
+import { withPixelLineHeight } from "../../../styles/functions.web";
 
 interface IProps {
-
     /**
      * Icon to display in the options section.
      */
@@ -47,7 +46,6 @@ interface IProps {
      */
     hasOptions?: boolean;
 
-
     /**
      * OnClick button handler.
      */
@@ -79,86 +77,85 @@ interface IProps {
     type: string;
 }
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()((theme) => {
     return {
         actionButton: {
             ...withPixelLineHeight(theme.typography.bodyLongBold),
             borderRadius: theme.shape.borderRadius,
-            boxSizing: 'border-box',
+            boxSizing: "border-box",
             color: theme.palette.text01,
-            cursor: 'pointer',
-            display: 'inline-block',
-            marginBottom: '16px',
-            padding: '7px 16px',
-            position: 'relative' as const,
-            textAlign: 'center',
-            width: '100%',
+            cursor: "pointer",
+            display: "inline-block",
+            marginBottom: "16px",
+            padding: "7px 16px",
+            position: "relative" as const,
+            textAlign: "center",
+            width: "100%",
             border: 0,
 
-            '&.primary': {
+            "&.primary": {
                 background: theme.palette.action01,
                 color: theme.palette.text01,
 
-                '&:hover': {
-                    backgroundColor: theme.palette.action01Hover
-                }
+                "&:hover": {
+                    backgroundColor: theme.palette.action01Hover,
+                },
             },
 
-            '&.secondary': {
+            "&.secondary": {
                 background: theme.palette.action02,
                 color: theme.palette.text04,
 
-                '&:hover': {
-                    backgroundColor: theme.palette.action02Hover
-                }
+                "&:hover": {
+                    backgroundColor: theme.palette.action02Hover,
+                },
             },
 
-            '&.text': {
-                width: 'auto',
-                fontSize: '13px',
-                margin: '0',
-                padding: '0'
+            "&.text": {
+                width: "auto",
+                fontSize: "13px",
+                margin: "0",
+                padding: "0",
             },
 
-            '&.disabled': {
+            "&.disabled": {
                 background: theme.palette.disabled01,
-                border: '1px solid #5E6D7A',
-                color: '#AFB6BC',
-                cursor: 'initial',
+                border: "1px solid #5E6D7A",
+                color: "#AFB6BC",
+                cursor: "initial",
 
-                '.icon': {
-                    '& > svg': {
-                        fill: '#AFB6BC'
-                    }
-                }
+                ".icon": {
+                    "& > svg": {
+                        fill: "#AFB6BC",
+                    },
+                },
             },
-
 
             [theme.breakpoints.down(400)]: {
                 fontSize: 16,
                 marginBottom: 8,
-                padding: '11px 16px'
-            }
+                padding: "11px 16px",
+            },
         },
         options: {
             borderRadius: Number(theme.shape.borderRadius) / 2,
-            alignItems: 'center',
-            display: 'flex',
-            height: '100%',
-            justifyContent: 'center',
-            position: 'absolute' as const,
+            alignItems: "center",
+            display: "flex",
+            height: "100%",
+            justifyContent: "center",
+            position: "absolute" as const,
             right: 0,
             top: 0,
             width: 36,
 
-            '&:hover': {
-                backgroundColor: '#0262B6'
+            "&:hover": {
+                backgroundColor: "#0262B6",
             },
 
-            '& svg': {
-                pointerEvents: 'none'
-            }
-        }
+            "& svg": {
+                pointerEvents: "none",
+            },
+        },
     };
 });
 
@@ -169,73 +166,73 @@ const useStyles = makeStyles()(theme => {
  */
 function ActionButton({
     children,
-    className = '',
+    className = "",
     disabled,
     hasOptions,
     OptionsIcon = IconArrowDown,
     testId,
-    type = 'primary',
+    type = "primary",
     onClick,
     onOptionsClick,
     tabIndex,
     role,
     ariaPressed,
     ariaLabel,
-    ariaDropDownLabel
+    ariaDropDownLabel,
 }: IProps) {
     const { classes, cx } = useStyles();
 
-    const onKeyPressHandler = useCallback(e => {
-        if (onClick && !disabled && (e.key === ' ' || e.key === 'Enter')) {
-            e.preventDefault();
-            onClick(e);
-        }
-    }, [ onClick, disabled ]);
-
-    const onOptionsKeyPressHandler = useCallback(e => {
-        if (onOptionsClick && !disabled && (e.key === ' ' || e.key === 'Enter')) {
-            e.preventDefault();
-            e.stopPropagation();
-            onOptionsClick(e);
-        }
-    }, [ onOptionsClick, disabled ]);
-
-    const containerClasses = cx(
-        classes.actionButton,
-        className && className,
-        type,
-        disabled && 'disabled'
+    const onKeyPressHandler = useCallback(
+        (e) => {
+            if (onClick && !disabled && (e.key === " " || e.key === "Enter")) {
+                e.preventDefault();
+                onClick(e);
+            }
+        },
+        [onClick, disabled]
     );
+
+    const onOptionsKeyPressHandler = useCallback(
+        (e) => {
+            if (onOptionsClick && !disabled && (e.key === " " || e.key === "Enter")) {
+                e.preventDefault();
+                e.stopPropagation();
+                onOptionsClick(e);
+            }
+        },
+        [onOptionsClick, disabled]
+    );
+
+    const containerClasses = cx(classes.actionButton, className && className, type, disabled && "disabled");
 
     return (
         <div
-            aria-disabled = { disabled }
-            aria-label = { ariaLabel }
-            className = { containerClasses }
-            data-testid = { testId ? testId : undefined }
-            onClick = { disabled ? undefined : onClick }
-            onKeyPress = { onKeyPressHandler }
-            role = 'button'
-            tabIndex = { 0 } >
+            aria-disabled={disabled}
+            aria-label={ariaLabel}
+            className={containerClasses}
+            data-testid={testId ? testId : undefined}
+            onClick={disabled ? undefined : onClick}
+            onKeyPress={onKeyPressHandler}
+            role="button"
+            tabIndex={0}
+        >
             {children}
-            { hasOptions
-                && <div
-                    aria-disabled = { disabled }
-                    aria-haspopup = 'true'
-                    aria-label = { ariaDropDownLabel }
-                    aria-pressed = { ariaPressed }
-                    className = { classes.options }
-                    data-testid = 'prejoin.joinOptions'
-                    onClick = { disabled ? undefined : onOptionsClick }
-                    onKeyPress = { onOptionsKeyPressHandler }
-                    role = { role }
-                    tabIndex = { tabIndex }>
-                    <Icon
-                        className = 'icon'
-                        size = { 24 }
-                        src = { OptionsIcon } />
+            {hasOptions && (
+                <div
+                    aria-disabled={disabled}
+                    aria-haspopup="true"
+                    aria-label={ariaDropDownLabel}
+                    aria-pressed={ariaPressed}
+                    className={classes.options}
+                    data-testid="prejoin.joinOptions"
+                    onClick={disabled ? undefined : onOptionsClick}
+                    onKeyPress={onOptionsKeyPressHandler}
+                    role={role}
+                    tabIndex={tabIndex}
+                >
+                    <Icon className="icon" size={24} src={OptionsIcon} />
                 </div>
-            }
+            )}
         </div>
     );
 }

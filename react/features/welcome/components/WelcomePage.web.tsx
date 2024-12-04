@@ -17,7 +17,10 @@ import { AbstractWelcomePage, IProps, _mapStateToProps } from "./AbstractWelcome
 import Tabs from "./Tabs";
 import baseApi from "../../../api/axios";
 
+
 import InviteButton from "./invite-button/InviteButton";
+
+
 
 /**
  * The pattern used to validate room name.
@@ -147,12 +150,14 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         super.componentDidMount();
 
         const url = new URL(location.href);
+
         const jwtParam = url.searchParams.get("jwt") || "";
         const keyParam = url.searchParams.get("key") || "";
         localStorage.setItem("token", jwtParam);
         if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
 
         document.body.classList.add("welcome-page");
+
 
         if (this.state.generateRoomNames) {
             this._updateRoomName();
@@ -197,7 +202,8 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
 
-        const jwtParam = localStorage.getItem("token");
+
+
 
         const obj = localStorage.getItem("features/base/settings");
         const settings = JSON.parse(obj || "{}");
@@ -222,12 +228,14 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
         return (
             <div className={"welcome"} id="welcome_page">
+
                 <div className="container_logo">
                     <Watermarks />
                     <div className="invite_container">
                         {!!jwtParam && <InviteButton createMeeting={() => this._onJoin(false)} />}
                     </div>
                 </div>
+
 
                 <div className="welcome__content">
                     <h1 className="welcome__content__title">Create your Video Calls and meeting</h1>
@@ -254,6 +262,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                                 >
                                     {"Join"}
                                 </button>
+
                             </div>
                         </div>
                         {this.state.isExist && <p style={{ color: "red" }}>invalid room code</p>}
@@ -274,6 +283,28 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                                 <div className="settings-toolbar-content" ref={this._setAdditionalToolbarContentRef} />
                             ) : null}
                         </div>
+
+                            </div>
+                        </div>
+                        {this.state.isExist && <p style={{ color: "red" }}>invalid room code</p>}
+                    </div>
+                </div>
+
+                {/* <div className="header">
+                    <div className="header-image" />
+                    <div className="header-container">
+                        <div className="header-watermark-container">
+                            <div className="welcome-watermark">
+                                <Watermarks defaultJitsiLogoURL={DEFAULT_WELCOME_PAGE_LOGO_URL} noMargins={true} />
+                            </div>
+                        </div>
+                        <div className="welcome-page-settings">
+                            <SettingsButton defaultTab={SETTINGS_TABS.CALENDAR} isDisplayedOnWelcomePage={true} />
+                            {showAdditionalToolbarContent ? (
+                                <div className="settings-toolbar-content" ref={this._setAdditionalToolbarContentRef} />
+                            ) : null}
+                        </div>
+
                         <h1 className="header-text-title">{t("welcomepage.headerTitle")}</h1>
                         <span className="header-text-subtitle">{t("welcomepage.headerSubtitle")}</span>
                         <div id="enter_room">
