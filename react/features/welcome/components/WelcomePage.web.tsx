@@ -177,11 +177,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         if (this._shouldShowAdditionalCard()) {
             this._additionalCardRef?.appendChild(this._additionalCardTemplate?.content.cloneNode(true) as Node);
         }
-        // debugger
-        const obj = localStorage.getItem("features/base/settings");
-        const settings = JSON.parse(obj || "{}");
-        const tempName = settings.displayName ?? ""
-        localStorage.setItem("name", tempName);
     }
 
     /**
@@ -209,6 +204,10 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
 
 
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        const tempName = settings.displayName ?? ""
+        localStorage.setItem("name", tempName);
 
         const checkRoom = async () => {
             try {
