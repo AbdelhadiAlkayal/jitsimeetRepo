@@ -43,6 +43,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     _additionalContentTemplate: HTMLTemplateElement | null;
     _additionalToolbarContentTemplate: HTMLTemplateElement | null;
     _titleHasNotAllowCharacter: boolean;
+    jwtParam: any;
 
     /**
      * Default values for {@code WelcomePage} component's properties.
@@ -84,6 +85,8 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
          * @type {HTMLTemplateElement|null}
          */
         this._additionalContentRef = null;
+
+        this.jwtParam = null;
 
         this._roomInputRef = null;
 
@@ -153,7 +156,9 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
         const jwtParam = url.searchParams.get("jwt") || "";
         const keyParam = url.searchParams.get("key") || "";
+        this.jwtParam = jwtParam
         localStorage.setItem("token", jwtParam);
+
         if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
 
         document.body.classList.add("welcome-page");
@@ -232,7 +237,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                 <div className="container_logo">
                     <Watermarks />
                     <div className="invite_container">
-                        {!!jwtParam && <InviteButton createMeeting={() => this._onJoin(false)} />}
+                        {!!this.jwtParam && <InviteButton createMeeting={() => this._onJoin(false)} />}
                     </div>
                 </div>
 
@@ -246,7 +251,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         <h6 style={{ color: "black" }}>Create meeting link </h6>
                         <h5 className="welcome__content__subtitle">Integrate Projects Discussions for Soon time </h5>
                         <div className="create_room__controls">
-                            {!!jwtParam && <MenuPopupState startMeting={() => this._onJoin(false)} />}
+                            {!!this.jwtParam && <MenuPopupState startMeting={() => this._onJoin(false)} />}
                             <div style={{ display: "flex", alignItems: "center", border: "1px solid #0f67ad" }}>
                                 <input
                                     type="text"
