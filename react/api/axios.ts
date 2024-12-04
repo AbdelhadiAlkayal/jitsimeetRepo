@@ -1,6 +1,25 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
+
+function encodeBase64(str: string): string {
+    // Convert the string to a Uint8Array (UTF-8 encoding)
+    const utf8Bytes = new TextEncoder().encode(str);
+    // Convert Uint8Array to a binary string
+    const binaryString = String.fromCharCode(...utf8Bytes);
+    // Use btoa to convert the binary string to Base64
+    return btoa(binaryString);
+}
+
+// Encrypt and encode the filter object
+export const encodeFilter = (filter: object): string => {
+    const encodedFilter = encodeBase64(JSON.stringify(filter));
+
+    return encodedFilter;
+};
+
+
 // Function to get the default configuration
+
 const getDefaultConfig = (config: InternalAxiosRequestConfig<any>) => {
     const token = localStorage.getItem("token");
 
