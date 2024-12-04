@@ -199,6 +199,10 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
         const jwtParam = localStorage.getItem("token");
 
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        localStorage.setItem("name", settings.displayName);
+
         const checkRoom = async () => {
             try {
                 const res = await baseApi.get(`/meeting/${this.state.room}`);

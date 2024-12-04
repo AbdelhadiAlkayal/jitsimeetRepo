@@ -57,7 +57,11 @@ function getDeviceIdByType(state: IReduxState, isType: string) {
  * @returns {string}
  */
 export function getDisplayName(state: IReduxState): string {
-    return state["features/base/settings"].displayName || "";
+    const name = String(localStorage.getItem("name"));
+    if (state["features/base/settings"].displayName) {
+        return state["features/base/settings"].displayName;
+    }
+    return name || "";
 }
 
 /**
