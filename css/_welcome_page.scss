@@ -1,7 +1,7 @@
 body.welcome-page {
     background: inherit;
     overflow: auto;
-    background-color: #EFF0F9;
+    background-color: #eff0f9;
 }
 
 .welcome {
@@ -11,6 +11,17 @@ body.welcome-page {
     height: 90vh;
     gap: 1.7rem;
 
+    .container_logo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .invite_container {
+            padding: 30px 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+    }
 
     &__content {
         display: flex;
@@ -30,7 +41,7 @@ body.welcome-page {
             font-weight: 400;
             font-size: 14px;
         }
-          .create_room {
+        .create_room {
             border: 1px solid #0f67ad;
             border-radius: 8px;
             padding: 20px;
@@ -47,7 +58,7 @@ body.welcome-page {
                 width: 100%; // Ensures alignment
                 justify-content: center;
 
-                .flex-item{
+                .flex-item {
                     display: flex;
                     align-items: center;
                     gap: 5px;
@@ -76,7 +87,6 @@ body.welcome-page {
                 }
             }
 
-
             .create_room__input {
                 flex: 1;
                 padding: 10px 15px;
@@ -101,7 +111,6 @@ body.welcome-page {
                     background-color: #2badb2;
                     color: #fff;
                 }
-
                 &.disabled {
                     background-color: #ccc;
                     color: #666;
@@ -110,6 +119,24 @@ body.welcome-page {
                 }
             }
         }
-    }
+        .own_card {
+            width: 500px;
+            border: 1px solid #0f67ad;
+            color: #000;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            font-size: 14px;
 
+            .content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 14px;
+            }
+        }
+    }
 }
