@@ -146,8 +146,19 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @inheritdoc
      * @returns {void}
      */
-    componentDidMount() {
+    async componentDidMount() {
         super.componentDidMount();
+
+        try {
+            const res = await baseApi.get(`meeting/today`);
+            if (res.status === 200) {
+                this.setState({
+                    meetings: res.data.data || [],
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
 
         const url = new URL(location.href);
 
@@ -178,10 +189,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
             this._additionalCardRef?.appendChild(this._additionalCardTemplate?.content.cloneNode(true) as Node);
         }
         // debugger
-        const obj = localStorage.getItem("features/base/settings");
-        const settings = JSON.parse(obj || "{}");
-        const tempName = settings.displayName ?? ""
-        localStorage.setItem("name", tempName);
     }
 
     /**
@@ -208,7 +215,10 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
 
-
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        const tempName = settings.displayName ?? "";
+        localStorage.setItem("name", tempName);
 
         const checkRoom = async () => {
             try {
@@ -226,6 +236,30 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
             }
             // this._onJoin(true);
         };
+
+        function formatDate(dateString: string, dashFormat?: boolean): string {
+            const date = new Date(dateString);
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+
+            let hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+
+            const ampm = hours >= 12 ? "PM" : "AM";
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            const formattedTime = `${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+
+            if (dashFormat) {
+                return `${year}-${month}-${day} ${formattedTime}`;
+            }
+
+            return `${year}/${month}/${day} ${formattedTime}`;
+        }
 
         return (
             <div className={"welcome"} id="welcome_page">
@@ -265,6 +299,22 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         </div>
                         {this.state.isExist && <p style={{ color: "red" }}>invalid room code</p>}
                     </div>
+                    {!!this.jwtParam && (
+                        <div className="own_card">
+                            <h6 style={{ color: "black", alignSelf: "center" }}>Today meetings</h6>
+                            {this.state.meetings?.map((val) => (
+                                <div className="content">
+                                    <span>
+                                        <strong>Meeting title :</strong> {val.title}
+                                    </span>
+                                    <span>
+                                        <strong>Started at : </strong>
+                                        {formatDate(val.started_at, true)}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* <div className="header">

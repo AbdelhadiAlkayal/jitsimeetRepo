@@ -76,6 +76,14 @@ const useInviteButton = () => {
     };
 
     const getUsers = async () => {
+        const hash = window.location.hash;
+        const hashParams = new URLSearchParams(hash.substring(1)); // Remove the '#' and parse
+
+        // Extract the 'userInfo.email' parameter
+        const emailUser = decodeURIComponent(hashParams.get("userInfo.email") || "").replace(/^"|"$/g, "");
+
+        // Decode the email if necessary
+
         const filter = {
             where: [],
             page: 1,
@@ -86,7 +94,7 @@ const useInviteButton = () => {
         try {
             const data = await fetchDataWithFilter("user/mini-page", filter, 1, 10);
 
-            const emails = data.data.map((obj) => obj.email);
+            const emails = data.data.map((obj) => obj.email).filter((email) => email !== emailUser);
             setEmailOfUsers(emails);
         } catch (error) {
             console.error("Error:", error);
