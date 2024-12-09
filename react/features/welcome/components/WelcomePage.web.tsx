@@ -188,7 +188,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         if (this._shouldShowAdditionalCard()) {
             this._additionalCardRef?.appendChild(this._additionalCardTemplate?.content.cloneNode(true) as Node);
         }
-        // debugger
     }
 
     /**
