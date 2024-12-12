@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
-
 function encodeBase64(str: string): string {
     // Convert the string to a Uint8Array (UTF-8 encoding)
     const utf8Bytes = new TextEncoder().encode(str);
@@ -16,7 +15,6 @@ export const encodeFilter = (filter: object): string => {
 
     return encodedFilter;
 };
-
 
 // Function to get the default configuration
 
@@ -44,7 +42,7 @@ const getDefaultConfig = (config: InternalAxiosRequestConfig<any>) => {
 
 // Create an Axios instance
 const baseApi = axios.create({
-    baseURL: "https://spacedesk.digital-pages.work/api/v1",
+    baseURL: "https://api.spacedesk.sa/api/v1",
     timeout: 10000,
 });
 
