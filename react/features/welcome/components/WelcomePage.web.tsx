@@ -164,6 +164,27 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 
         const jwtParam = url.searchParams.get("jwt") || "";
         const keyParam = url.searchParams.get("key") || "";
+        try {
+            // Wrap each API call in its own try-catch
+
+            const [resKey, resToken] = await Promise.allSettled([
+                baseApi.get(`/meeting/verify-key/${keyParam}`),
+                baseApi.get(`/auth/validate-token`),
+            ]);
+
+            const isResKeyFailed =
+                resKey.status === "rejected" || (resKey.status === "fulfilled" && resKey.value.status !== 200);
+            const isResTokenFailed =
+                resToken.status === "rejected" || (resToken.status === "fulfilled" && resToken.value.status !== 200);
+
+            // Redirect if BOTH APIs fail
+            if (isResKeyFailed && isResTokenFailed) {
+                window.location.href = "https://spacedesk.sa";
+            }
+        } catch (error) {
+            console.error("Unexpected error occurred:", error);
+        }
+
         this.jwtParam = jwtParam;
         localStorage.setItem("token", jwtParam);
 
@@ -302,7 +323,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         <div className="own_card">
                             <h6 style={{ color: "black", alignSelf: "center" }}>Today meetings</h6>
                             {this.state.meetings?.map((val) => (
-                                <div className="content">
+                                <div key={val.id} className="content">
                                     <span>
                                         <strong>Meeting title :</strong> {val.title}
                                     </span>
