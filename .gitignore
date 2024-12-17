@@ -114,3 +114,4 @@ react-native-sdk/sounds
 tests/.env
 test-results
 
+docker_operations.sh
