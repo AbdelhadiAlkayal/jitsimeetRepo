@@ -286,7 +286,9 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                 <div className="container_logo">
                     <Watermarks />
                     <div className="invite_container">
-                        {!!this.jwtParam && <InviteButton createMeeting={() => this._onJoin(false)} />}
+                        {!!this.jwtParam && (
+                            <InviteButton createMeeting={(mails: string[]) => this._onJoin(false, true, mails)} />
+                        )}
                     </div>
                 </div>
 

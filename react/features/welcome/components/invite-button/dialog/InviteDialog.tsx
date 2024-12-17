@@ -13,7 +13,7 @@ interface IInviteDialog {
     children_1: ReactNode;
     children_2: ReactNode;
     number: number;
-    createMeeting: () => Promise<void>;
+    createMeeting: (mails: string[]) => Promise<void>;
     spaceDeskUser: string[];
     guestUser: string[];
 }
@@ -40,15 +40,15 @@ const InviteDialog = ({
 
         try {
             if (check) {
-                await createMeeting();
+                createMeeting(usersEmail);
 
-                const id = localStorage.getItem("id");
-                if (id) {
-                    const res = await baseApi.post(`meeting/${id}/invite`, {
-                        emails: usersEmail,
-                    });
-                    res.status === 200 && handleClose();
-                }
+                // const id = localStorage.getItem("id");
+                // if (id) {
+                //     const res = await baseApi.post(`meeting/${id}/invite`, {
+                //         emails: usersEmail,
+                //     });
+                //     res.status === 200 && handleClose();
+                // }
             }
         } catch (error) {
             console.error("Error during meeting creation:", error);

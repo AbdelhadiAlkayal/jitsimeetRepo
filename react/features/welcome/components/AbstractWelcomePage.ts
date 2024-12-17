@@ -216,7 +216,7 @@ export class AbstractWelcomePage<P extends IProps> extends Component<P, IState> 
      * @protected
      * @returns {void}
      */
-    async _onJoin(join: boolean) {
+    async _onJoin(join: boolean, isInvite: boolean = false, usersEmail?: string[]) {
         let roomId = "";
 
         if (!join) {
@@ -227,7 +227,14 @@ export class AbstractWelcomePage<P extends IProps> extends Component<P, IState> 
             try {
                 const response = await baseApi.post(`meeting`, payload);
                 roomId = response.data.id;
-                localStorage.setItem("id", roomId);
+                if (isInvite) {
+                    if (roomId) {
+                        const res = await baseApi.post(`meeting/${roomId}/invite`, {
+                            emails: usersEmail,
+                        });
+                    }
+                    localStorage.setItem("id", roomId);
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
 

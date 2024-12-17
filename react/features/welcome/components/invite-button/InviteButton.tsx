@@ -10,7 +10,7 @@ import UserSelect from "./UserSelect";
 import Fields from "./fields/Fields";
 
 interface IInviteButton {
-    createMeeting: () => Promise<void>;
+    createMeeting: (mails: string[]) => Promise<void>;
 }
 
 const InviteButton = ({ createMeeting }: IInviteButton) => {
