@@ -149,21 +149,14 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     async componentDidMount() {
         super.componentDidMount();
 
-        try {
-            const res = await baseApi.get(`meeting/today`);
-            if (res.status === 200) {
-                this.setState({
-                    meetings: res.data.data || [],
-                });
-            }
-        } catch (error) {
-            console.error(error);
-        }
-
         const url = new URL(location.href);
 
         const jwtParam = url.searchParams.get("jwt") || "";
         const keyParam = url.searchParams.get("key") || "";
+        this.jwtParam = jwtParam;
+        localStorage.setItem("token", jwtParam);
+
+        if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
         try {
             // Wrap each API call in its own try-catch
 
@@ -185,10 +178,16 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
             console.error("Unexpected error occurred:", error);
         }
 
-        this.jwtParam = jwtParam;
-        localStorage.setItem("token", jwtParam);
-
-        if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
+        try {
+            const res = await baseApi.get(`meeting/today`);
+            if (res.status === 200) {
+                this.setState({
+                    meetings: res.data.data || [],
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
 
         document.body.classList.add("welcome-page");
 
