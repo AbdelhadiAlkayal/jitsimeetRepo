@@ -59,6 +59,19 @@ export interface IProps extends WithTranslation {
     dispatch: IStore["dispatch"];
 }
 
+enum TypeEnum {
+    INSTANT = "INSTANT",
+    SCHEDULE = "SCHEDULE",
+}
+
+interface IMeetings {
+    id: string;
+    title: string;
+    description: string;
+    started_at: string;
+    type: TypeEnum;
+}
+
 interface IState {
     _fieldFocused?: boolean;
     animateTimeoutId?: number;
@@ -73,6 +86,7 @@ interface IState {
     roomPlaceholder: string;
     updateTimeoutId?: number;
     isExist?: boolean;
+    meetings?: IMeetings[];
 }
 
 /**
@@ -110,6 +124,7 @@ export class AbstractWelcomePage<P extends IProps> extends Component<P, IState> 
         roomNameInputAnimation: 0,
         hintBoxAnimation: 0,
         isExist: false,
+        meetings: [],
     };
 
     /**
@@ -201,7 +216,7 @@ export class AbstractWelcomePage<P extends IProps> extends Component<P, IState> 
      * @protected
      * @returns {void}
      */
-    async _onJoin(join: boolean) {
+    async _onJoin(join: boolean, isInvite: boolean = false, usersEmail?: string[]) {
         let roomId = "";
 
         if (!join) {
@@ -212,7 +227,14 @@ export class AbstractWelcomePage<P extends IProps> extends Component<P, IState> 
             try {
                 const response = await baseApi.post(`meeting`, payload);
                 roomId = response.data.id;
-                localStorage.setItem("id", roomId);
+                if (isInvite) {
+                    if (roomId) {
+                        const res = await baseApi.post(`meeting/${roomId}/invite`, {
+                            emails: usersEmail,
+                        });
+                    }
+                    localStorage.setItem("id", roomId);
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
 

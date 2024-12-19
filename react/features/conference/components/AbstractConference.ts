@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { IReduxState } from '../../app/types';
-import { NotificationsContainer } from '../../notifications/components';
-import { shouldDisplayTileView } from '../../video-layout/functions.any';
-import { shouldDisplayNotifications } from '../functions';
+import { IReduxState } from "../../app/types";
+import { NotificationsContainer } from "../../notifications/components";
+import { shouldDisplayTileView } from "../../video-layout/functions.any";
+import { shouldDisplayNotifications } from "../functions";
 
 /**
  * The type of the React {@code Component} props of {@link AbstractLabels}.
  */
 export type AbstractProps = {
-
     /**
      * Set to {@code true} when the notifications are to be displayed.
      *
@@ -41,9 +40,7 @@ export type AbstractProps = {
  *
  * @augments Component
  */
-export class AbstractConference<P extends AbstractProps, S>
-    extends Component<P, S> {
-
+export class AbstractConference<P extends AbstractProps, S> extends Component<P, S> {
     /**
      * Renders the {@code LocalRecordingLabel}.
      *
@@ -54,9 +51,7 @@ export class AbstractConference<P extends AbstractProps, S>
      */
     renderNotificationsContainer(props?: any) {
         if (this.props._notificationsVisible) {
-            return (
-                React.createElement(NotificationsContainer, props)
-            );
+            return React.createElement(NotificationsContainer, props);
         }
 
         return null;
@@ -74,7 +69,7 @@ export class AbstractConference<P extends AbstractProps, S>
 export function abstractMapStateToProps(state: IReduxState) {
     return {
         _notificationsVisible: shouldDisplayNotifications(state),
-        _room: state['features/base/conference'].room ?? '',
-        _shouldDisplayTileView: shouldDisplayTileView(state)
+        _room: state["features/base/conference"].room ?? "",
+        _shouldDisplayTileView: shouldDisplayTileView(state),
     };
 }

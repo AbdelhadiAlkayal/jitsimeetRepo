@@ -16,7 +16,8 @@ import MenuPopupState from "./menu-popup-state/MenuPopupState";
 import { AbstractWelcomePage, IProps, _mapStateToProps } from "./AbstractWelcomePage";
 import Tabs from "./Tabs";
 import baseApi from "../../../api/axios";
-import { interfaceConfig } from "../../../../interface_config";
+
+import InviteButton from "./invite-button/InviteButton";
 
 /**
  * The pattern used to validate room name.
@@ -39,6 +40,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     _additionalContentTemplate: HTMLTemplateElement | null;
     _additionalToolbarContentTemplate: HTMLTemplateElement | null;
     _titleHasNotAllowCharacter: boolean;
+    jwtParam: any;
 
     /**
      * Default values for {@code WelcomePage} component's properties.
@@ -80,6 +82,8 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
          * @type {HTMLTemplateElement|null}
          */
         this._additionalContentRef = null;
+
+        this.jwtParam = null;
 
         this._roomInputRef = null;
 
@@ -142,17 +146,56 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @inheritdoc
      * @returns {void}
      */
-    componentDidMount() {
+    async componentDidMount() {
         super.componentDidMount();
 
-        const url = new URL(location.href);
-        const jwtParam = url.searchParams.get("jwt") as string;
-        const keyParam = url.searchParams.get("key") as string;
-        localStorage.setItem("token", jwtParam);
-        localStorage.setItem("key", keyParam.replace(/\//g, ""));
+        // if (!localStorage.getItem("initExecuted")) {
+        //     const url = new URL(location.href);
+
+        //     const jwtParam = url.searchParams.get("jwt") || "";
+        //     const keyParam = url.searchParams.get("key") || "";
+        //     localStorage.setItem("token", jwtParam);
+        //     if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
+
+        //     // Set a flag in localStorage to indicate this code has run
+        //     localStorage.setItem("initExecuted", "true");
+        //     try {
+        //         // Wrap each API call in its own try-catch
+
+        //         const [resKey, resToken] = await Promise.allSettled([
+        //             baseApi.get(`/meeting/verify-key/${keyParam}`),
+        //             baseApi.get(`/auth/validate-token`),
+        //         ]);
+
+        //         const isResKeyFailed =
+        //             resKey.status === "rejected" || (resKey.status === "fulfilled" && resKey.value.status !== 200);
+        //         const isResTokenFailed =
+        //             resToken.status === "rejected" ||
+        //             (resToken.status === "fulfilled" && resToken.value.status !== 200);
+
+        //         // Redirect if BOTH APIs fail
+        //         if (isResKeyFailed && isResTokenFailed) {
+        //             window.location.href = "https://spacedesk.sa";
+        //         }
+        //     } catch (error) {
+        //         console.error("Unexpected error occurred:", error);
+        //     }
+        // }
+
+        this.jwtParam = localStorage.getItem("token");
+
+        try {
+            const res = await baseApi.get(`meeting/today`);
+            if (res.status === 200) {
+                this.setState({
+                    meetings: res.data.data || [],
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
 
         document.body.classList.add("welcome-page");
-        document.title = interfaceConfig.APP_NAME;
 
         if (this.state.generateRoomNames) {
             this._updateRoomName();
@@ -193,13 +236,14 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      */
     render() {
         const { _moderatedRoomServiceUrl, t } = this.props;
-        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
 
-        const url = new URL(location.href);
-        const jwtParam = url.searchParams.get("jwt") as string;
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        const tempName = settings.displayName ?? "";
+        localStorage.setItem("name", tempName);
 
         const checkRoom = async () => {
             try {
@@ -218,9 +262,41 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
             // this._onJoin(true);
         };
 
+        function formatDate(dateString: string, dashFormat?: boolean): string {
+            const date = new Date(dateString);
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+
+            let hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+
+            const ampm = hours >= 12 ? "PM" : "AM";
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            const formattedTime = `${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+
+            if (dashFormat) {
+                return `${year}-${month}-${day} ${formattedTime}`;
+            }
+
+            return `${year}/${month}/${day} ${formattedTime}`;
+        }
+
         return (
             <div className={"welcome"} id="welcome_page">
-                <Watermarks defaultJitsiLogoURL={DEFAULT_WELCOME_PAGE_LOGO_URL} />
+                <div className="container_logo">
+                    <Watermarks />
+                    <div className="invite_container">
+                        {!!this.jwtParam && (
+                            <InviteButton createMeeting={(mails: string[]) => this._onJoin(false, true, mails)} />
+                        )}
+                    </div>
+                </div>
+
                 <div className="welcome__content">
                     <h1 className="welcome__content__title">Create your Video Calls and meeting</h1>
                     <h5 className="welcome__content__subtitle">
@@ -230,7 +306,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         <h6 style={{ color: "black" }}>Create meeting link </h6>
                         <h5 className="welcome__content__subtitle">Integrate Projects Discussions for Soon time </h5>
                         <div className="create_room__controls">
-                            {!!jwtParam && <MenuPopupState startMeting={() => this._onJoin(false)} />}
+                            {!!this.jwtParam && <MenuPopupState startMeting={() => this._onJoin(false)} />}
                             <div style={{ display: "flex", alignItems: "center", border: "1px solid #0f67ad" }}>
                                 <input
                                     type="text"
@@ -246,6 +322,43 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                                 >
                                     {"Join"}
                                 </button>
+                            </div>
+                        </div>
+                        {this.state.isExist && <p style={{ color: "red" }}>invalid room code</p>}
+                    </div>
+                    {!!this.jwtParam && (
+                        <div className="own_card">
+                            <h6 style={{ color: "black", alignSelf: "center" }}>Today meetings</h6>
+                            {this.state.meetings?.map((val) => (
+                                <div key={val.id} className="content">
+                                    <span>
+                                        <strong>Meeting title :</strong> {val.title}
+                                    </span>
+                                    <span>
+                                        <strong>Started at : </strong>
+                                        {formatDate(val.started_at, true)}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* <div className="header">
+                    <div className="header-image" />
+                    <div className="header-container">
+                        <div className="header-watermark-container">
+                            <div className="welcome-watermark">
+                                <Watermarks defaultJitsiLogoURL={DEFAULT_WELCOME_PAGE_LOGO_URL} noMargins={true} />
+                            </div>
+                        </div>
+                        <div className="welcome-page-settings">
+                            <SettingsButton defaultTab={SETTINGS_TABS.CALENDAR} isDisplayedOnWelcomePage={true} />
+                            {showAdditionalToolbarContent ? (
+                                <div className="settings-toolbar-content" ref={this._setAdditionalToolbarContentRef} />
+                            ) : null}
+                        </div>
+
                             </div>
                         </div>
                         {this.state.isExist && <p style={{ color: "red" }}>invalid room code</p>}
@@ -266,6 +379,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                                 <div className="settings-toolbar-content" ref={this._setAdditionalToolbarContentRef} />
                             ) : null}
                         </div>
+
                         <h1 className="header-text-title">{t("welcomepage.headerTitle")}</h1>
                         <span className="header-text-subtitle">{t("welcomepage.headerSubtitle")}</span>
                         <div id="enter_room">

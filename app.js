@@ -36,10 +36,11 @@ window.APP = {
 };
 
 // if (location.href) {
-//     const jwtParam = localStorage.getItem("token");
-//     const keyParam = localStorage.getItem("key");
+//     const url = new URL(location.href);
+//     const jwtParam = url.searchParams.get("jwt");
 
-//     if (!jwtParam && !keyParam) {
+//     // If 'jwt' is missing, redirect to Google
+//     if (!jwtParam) {
 //         window.location.href = "https://spacedesk.sa";
 //     }
 // }

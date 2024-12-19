@@ -246,6 +246,21 @@ const Prejoin = ({
     const { classes } = useStyles();
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const obj = localStorage.getItem("features/base/settings");
+        const settings = JSON.parse(obj || "{}");
+        const tempName = settings.displayName ?? localStorage.getItem("name");
+
+        if (tempName) {
+            APP.store.dispatch(
+                updateSettings({
+                    displayName: tempName,
+                })
+            );
+            // console.log("settings.displayName", settings.displayName || "hello");
+        }
+    }, []);
     /**
      * Handler for the join button.
      *
@@ -253,8 +268,9 @@ const Prejoin = ({
      * @returns {void}
      */
     const onJoinButtonClick = async () => {
+        const idFromUrl = new URL(location.href).pathname.replace(/^\/+/, "");
         const key: string = String(localStorage.getItem("key"));
-        const id: string = String(localStorage.getItem("id"));
+        const id: string = idFromUrl ?? String(localStorage.getItem("id"));
         try {
             const res = await baseApi.post(`meeting/${id}/join`, {
                 key: key,
