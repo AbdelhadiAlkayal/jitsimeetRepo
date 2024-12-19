@@ -269,8 +269,7 @@ const Prejoin = ({
      */
     const onJoinButtonClick = async () => {
         const idFromUrl = new URL(location.href).pathname.replace(/^\/+/, "");
-        const keyFromUrl = new URL(location.href).searchParams.get("key");
-        const key: string = (keyFromUrl && keyFromUrl.replace(/\//g, "")) ?? String(localStorage.getItem("key"));
+        const key: string = String(localStorage.getItem("key"));
         const id: string = idFromUrl ?? String(localStorage.getItem("id"));
         try {
             const res = await baseApi.post(`meeting/${id}/join`, {

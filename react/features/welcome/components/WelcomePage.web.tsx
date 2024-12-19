@@ -149,34 +149,40 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     async componentDidMount() {
         super.componentDidMount();
 
-        const url = new URL(location.href);
+        // if (!localStorage.getItem("initExecuted")) {
+        //     const url = new URL(location.href);
 
-        const jwtParam = url.searchParams.get("jwt") || "";
-        const keyParam = url.searchParams.get("key") || "";
-        this.jwtParam = jwtParam;
-        localStorage.setItem("token", jwtParam);
+        //     const jwtParam = url.searchParams.get("jwt") || "";
+        //     const keyParam = url.searchParams.get("key") || "";
+        //     localStorage.setItem("token", jwtParam);
+        //     if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
 
-        if (keyParam) localStorage.setItem("key", keyParam.replace(/\//g, ""));
-        try {
-            // Wrap each API call in its own try-catch
+        //     // Set a flag in localStorage to indicate this code has run
+        //     localStorage.setItem("initExecuted", "true");
+        //     try {
+        //         // Wrap each API call in its own try-catch
 
-            const [resKey, resToken] = await Promise.allSettled([
-                baseApi.get(`/meeting/verify-key/${keyParam}`),
-                baseApi.get(`/auth/validate-token`),
-            ]);
+        //         const [resKey, resToken] = await Promise.allSettled([
+        //             baseApi.get(`/meeting/verify-key/${keyParam}`),
+        //             baseApi.get(`/auth/validate-token`),
+        //         ]);
 
-            const isResKeyFailed =
-                resKey.status === "rejected" || (resKey.status === "fulfilled" && resKey.value.status !== 200);
-            const isResTokenFailed =
-                resToken.status === "rejected" || (resToken.status === "fulfilled" && resToken.value.status !== 200);
+        //         const isResKeyFailed =
+        //             resKey.status === "rejected" || (resKey.status === "fulfilled" && resKey.value.status !== 200);
+        //         const isResTokenFailed =
+        //             resToken.status === "rejected" ||
+        //             (resToken.status === "fulfilled" && resToken.value.status !== 200);
 
-            // Redirect if BOTH APIs fail
-            if (isResKeyFailed && isResTokenFailed) {
-                window.location.href = "https://spacedesk.sa";
-            }
-        } catch (error) {
-            console.error("Unexpected error occurred:", error);
-        }
+        //         // Redirect if BOTH APIs fail
+        //         if (isResKeyFailed && isResTokenFailed) {
+        //             window.location.href = "https://spacedesk.sa";
+        //         }
+        //     } catch (error) {
+        //         console.error("Unexpected error occurred:", error);
+        //     }
+        // }
+
+        this.jwtParam = localStorage.getItem("token");
 
         try {
             const res = await baseApi.get(`meeting/today`);
